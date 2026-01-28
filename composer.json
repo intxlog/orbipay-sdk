@@ -1,5 +1,5 @@
 {
-    "name": "co-php-sdk-v5.4.0/co-php-sdk-v5",
+    "name": "intxlog/orbipay-sdk",
     "version": "5.4.0",
     "description": "PHP SDK to integrate with Checkout.",
     "keywords": [

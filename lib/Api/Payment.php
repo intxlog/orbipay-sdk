@@ -579,9 +579,9 @@ class Payment extends BaseRequest
     
         try{
             
+            echo "<script>console.log('paymentToken: " . print_r($this->paymentToken, true) . "');</script>";
+            echo "<script>console.log('inv: " . print_r($inv, true) . "');</script>";
             echo "<script>console.log('Starting DVES process');</script>";
-            echo "paymentToken: " . print_r($this->paymentToken, true);
-            echo "inv: " . print_r($inv, true);
             $decryptedToken = EncryptionUtil::decrypt($this->paymentToken->getToken(), $inv->getClPrivKey());
            echo "<script>console.log('decryptedToken: ".$decryptedToken."');</script>";
              EncryptionUtil::verify($decryptedToken,$this->digiSign,$inv->getCoPubKey());

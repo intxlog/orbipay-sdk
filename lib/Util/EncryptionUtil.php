@@ -77,18 +77,21 @@ class EncryptionUtil
 
 
     public static function decrypt($crypted,$privateKey){
-        // echo "<script>console.log('in decrypt method::::::::');</script>";
-        // echo $privateKey;
-        // $rsa = PublicKeyLoader::load($privatekey)->withHash('sha256')->withMGFHash('sha1');
-        // echo "<script>console.log('in decrypt method 2nd line::::::::');</script>";
-        // $rsa->setEncryptionMode(CRYPT_RSA_ENCRYPTION_OAEP);
-        // return $rsa->decrypt($crypted);
+        echo "<script>console.log('in decrypt method');</script>";
+        echo "<script>console.log('Private key first 50 chars: " . substr($privateKey, 0, 50) . "');</script>";
+        echo "<script>console.log('Private key length: " . strlen($privateKey) . "');</script>";
 
-        $private = PublicKeyLoader::load($privateKey);
-        $tkn = $private->withHash("sha256")
-                        ->withMGFHash("sha1")
-                        ->decrypt(base64_decode($crypted));
-        return $tkn;
+        try {
+            $private = PublicKeyLoader::load($privateKey);
+            echo "<script>console.log('Key loaded successfully');</script>";
+            $tkn = $private->withHash("sha256")
+                            ->withMGFHash("sha1")
+                            ->decrypt(base64_decode($crypted));
+            return $tkn;
+        } catch (\Exception $e) {
+            echo "<script>console.log('Error loading key: " . $e->getMessage() . "');</script>";
+            throw $e;
+        }
     }
 
     public static function sign($data,$privateKey){

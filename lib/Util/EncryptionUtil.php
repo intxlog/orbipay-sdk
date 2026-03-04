@@ -77,10 +77,10 @@ class EncryptionUtil
 
     public static function decrypt($crypted,$privateKey){
         echo "<script>console.log('in decrypt method');</script>";
-        echo "<script>console.log('Type of crypted: " . gettype($crypted) . "');</script>";
-        echo "<script>console.log('Crypted first 50 chars: " . substr((string)$crypted, 0, 50) . "');</script>";
-        echo "<script>console.log('Private key first 50 chars: " . substr($privateKey, 0, 50) . "');</script>";
-        echo "<script>console.log('Private key length: " . strlen($privateKey) . "');</script>";
+        // echo "<script>console.log('Type of crypted: " . gettype($crypted) . "');</script>";
+        // echo "<script>console.log('Crypted first 50 chars: " . substr((string)$crypted, 0, 50) . "');</script>";
+        // echo "<script>console.log('Private key first 50 chars: " . substr($privateKey, 0, 50) . "');</script>";
+        // echo "<script>console.log('Private key length: " . strlen($privateKey) . "');</script>";
 
         try {
             $private = PublicKeyLoader::load($privateKey);

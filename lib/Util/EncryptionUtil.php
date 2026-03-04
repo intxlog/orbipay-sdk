@@ -105,7 +105,12 @@ class EncryptionUtil
     }
 
     public static function verify($data,$signature,$publicKey){
-        if(openssl_verify($data,base64_decode($signature),$publicKey,OPENSSL_ALGO_SHA256)){
+        echo "<script>console.log('Verify - Data: " . substr($data, 0, 50) . "');</script>";
+        echo "<script>console.log('Verify - Signature first 50 chars: " . substr($signature, 0, 50) . "');</script>";
+        echo "<script>console.log('Verify - Public key first 50 chars: " . substr($publicKey, 0, 50) . "');</script>";
+        $pubKeyResource = openssl_get_publickey($publicKey);
+        echo "<script>console.log('Public key resource: " . (is_resource($pubKeyResource) || is_object($pubKeyResource) ? 'valid' : 'invalid') . "');</script>";
+        if(openssl_verify($data,base64_decode($signature),$pubKeyResource,OPENSSL_ALGO_SHA256)){
             return true;
         }else{
             echo openssl_error_string();

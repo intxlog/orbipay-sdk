@@ -31,15 +31,16 @@ class EncryptionUtil
 	// 	echo "<script>console.log('after encrypt');</script>";
 	// 	//$encrypted = base64_encode($crypted);
 	// 	//echo "<script>console.log('encrypted message ".$encrypted."');</script>";
-
+		
     //         return base64_encode($crypted);
     //     }else{
     //         echo openssl_error_string();
     //         throw new ApiException('Failed to encrypt.');
     //     }
     $public = PublicKeyLoader::load($publicKey);
-    $crypted = $public->withPadding(\phpseclib3\Crypt\RSA::ENCRYPTION_PKCS1)
-                      ->encrypt($message);
+    $crypted = $public->withHash("sha256")
+                    ->withMGFHash("sha1")
+                    ->encrypt($message);
     return base64_encode($crypted);
 
     }
@@ -76,26 +77,18 @@ class EncryptionUtil
 
 
     public static function decrypt($crypted,$privateKey){
-        echo "<script>console.log('in decrypt method');</script>";
-        // echo "<script>console.log('Type of crypted: " . gettype($crypted) . "');</script>";
-        // echo "<script>console.log('Crypted first 50 chars: " . substr((string)$crypted, 0, 50) . "');</script>";
-        // echo "<script>console.log('Private key first 50 chars: " . substr($privateKey, 0, 50) . "');</script>";
-        // echo "<script>console.log('Private key length: " . strlen($privateKey) . "');</script>";
+        // echo "<script>console.log('in decrypt method::::::::');</script>";
+        // echo $privateKey;
+        // $rsa = PublicKeyLoader::load($privatekey)->withHash('sha256')->withMGFHash('sha1');
+        // echo "<script>console.log('in decrypt method 2nd line::::::::');</script>";
+        // $rsa->setEncryptionMode(CRYPT_RSA_ENCRYPTION_OAEP);
+        // return $rsa->decrypt($crypted);
 
-        try {
-            $private = PublicKeyLoader::load($privateKey);
-            echo "<script>console.log('Key loaded successfully');</script>";
-            $tkn = $private->withPadding(\phpseclib3\Crypt\RSA::ENCRYPTION_PKCS1)
-                           ->decrypt(base64_decode($crypted));
-            // $tkn = $private->withHash("sha256")
-            //                 ->withMGFHash("sha1")
-            //                 ->decrypt(base64_decode($crypted));
-
-            return $tkn;
-        } catch (\Exception $e) {
-            echo "<script>console.log('Error loading key: " . $e->getMessage() . "');</script>";
-            throw $e;
-        }
+        $private = PublicKeyLoader::load($privateKey);
+        $tkn = $private->withHash("sha256")
+                        ->withMGFHash("sha1")
+                        ->decrypt(base64_decode($crypted));
+        return $tkn;
     }
 
     public static function sign($data,$privateKey){
@@ -109,12 +102,7 @@ class EncryptionUtil
     }
 
     public static function verify($data,$signature,$publicKey){
-        echo "<script>console.log('Verify - Data: " . substr($data, 0, 50) . "');</script>";
-        echo "<script>console.log('Verify - Signature first 50 chars: " . substr($signature, 0, 50) . "');</script>";
-        echo "<script>console.log('Verify - Public key first 50 chars: " . substr($publicKey, 0, 50) . "');</script>";
-        $pubKeyResource = openssl_get_publickey($publicKey);
-        echo "<script>console.log('Public key resource: " . (is_resource($pubKeyResource) || is_object($pubKeyResource) ? 'valid' : 'invalid') . "');</script>";
-        if(openssl_verify($data,base64_decode($signature),$pubKeyResource)){
+        if(openssl_verify($data,base64_decode($signature),$publicKey,OPENSSL_ALGO_SHA256)){
             return true;
         }else{
             echo openssl_error_string();

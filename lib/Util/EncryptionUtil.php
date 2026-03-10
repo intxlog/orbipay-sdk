@@ -87,6 +87,10 @@ class EncryptionUtil
             echo "<script>console.log('Key loaded successfully');</script>";
             $tkn = $private->withPadding(\phpseclib3\Crypt\RSA::ENCRYPTION_PKCS1)
                            ->decrypt(base64_decode($crypted));
+            // $tkn = $private->withHash("sha256")
+            //                 ->withMGFHash("sha1")
+            //                 ->decrypt(base64_decode($crypted));
+
             return $tkn;
         } catch (\Exception $e) {
             echo "<script>console.log('Error loading key: " . $e->getMessage() . "');</script>";
@@ -110,7 +114,7 @@ class EncryptionUtil
         echo "<script>console.log('Verify - Public key first 50 chars: " . substr($publicKey, 0, 50) . "');</script>";
         $pubKeyResource = openssl_get_publickey($publicKey);
         echo "<script>console.log('Public key resource: " . (is_resource($pubKeyResource) || is_object($pubKeyResource) ? 'valid' : 'invalid') . "');</script>";
-        if(openssl_verify($data,base64_decode($signature),$pubKeyResource,OPENSSL_ALGO_SHA256)){
+        if(openssl_verify($data,base64_decode($signature),$pubKeyResource)){
             return true;
         }else{
             echo openssl_error_string();

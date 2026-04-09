@@ -507,7 +507,6 @@ class Payment extends BaseRequest
         $this->customFields = $customFields;
 
         if(sizeof($customFields) == 0) {
-            echo "<script>console.log('No custom fields passed');</script>";
             $this->customFields = array_map();
         }
         return $this;
@@ -529,7 +528,6 @@ class Payment extends BaseRequest
         $this->setSignatureKey($signatureKey);
 	if($clientApiKey != 0)
 	{
-	echo "<script>console.log('Received valid client Api Key');</script>";	
 	$this->setClientApiKey($clientApiKey);
 	}
         return $this;
@@ -547,13 +545,8 @@ class Payment extends BaseRequest
     }
 
     public function confirm(InvocationContext $inv, $liveMode){
-        echo "<script>console.log('in confirm() with invc');</script>";
 	if(!($liveMode == "NA")){
-	echo "<script>console.log('in confirm() with live mode: ".$liveMode."');</script>";
 	$this->setLiveMode($liveMode);
-        }
-        else{
-            echo "<script>console.log('live mode param is not set');</script>";
         }
 
         
@@ -579,30 +572,22 @@ class Payment extends BaseRequest
     
         try{
             
-            echo "<script>console.log('Starting DVES process');</script>";
             $decryptedToken = EncryptionUtil::decrypt($this->paymentToken->getToken(), $inv->getClPrivKey());
-           echo "<script>console.log('decryptedToken: ".$decryptedToken."');</script>";
              EncryptionUtil::verify($decryptedToken,$this->digiSign,$inv->getCoPubKey());
-             echo "<script>console.log('After verification');</script>";
             $confirmPaymentTokenRequest = new ConfirmPaymentTokenRequest();
             $confirmPaymentTokenRequest->setCustomerAccountReference($this->customerAccountReference);
             $confirmPaymentTokenRequest->setCustomFields($this->customFields);
 
             $tokenizedAmount = round($this->paymentToken->getTokenizedAmount(), 2);
-            echo "<script>console.log('Rounded amount: ".$tokenizedAmount."');</script>";
             $paymentToken = new PaymentToken(EncryptionUtil::encrypt($decryptedToken,$inv->getCoPubKey()), EncryptionUtil::encrypt($tokenizedAmount,$inv->getCoPubKey()) );
             $confirmPaymentTokenRequest->setPaymentToken($paymentToken);
             $this->digiSign = EncryptionUtil::sign($decryptedToken,$inv->getClPrivKey());
-            echo "<script>console.log('Digisign computed');</script>";
             if($inv->getClientApiKey() == null && $liveMode == 0){
- 		    echo "<script>console.log('calling apiclient without api key and live mode');</script>";
                 $apiClient = new ApiClient($this->getClientId(), $this->getSignatureKey());
             }
             else{
-                echo "<script>console.log('calling apiclient with api key and live mode');</script>";
                 $apiClient = new ApiClient($this->getClientId(), $this->getSignatureKey(), $inv->getClientApiKey(), $this->getLiveMode(), $inv->getIdempotentRequestKey());
             }
-            echo "<script>console.log('initialized apiclient');</script>";
             $paymentTokenAPI =  new PaymentTokenApi($apiClient);
             $payment = new PaymentVO();
             $response =  $paymentTokenAPI->confirmPaymentToken($this->getClientId(), $this->digiSign, $confirmPaymentTokenRequest);
@@ -613,8 +598,6 @@ class Payment extends BaseRequest
             return $payment;
 	
         }catch (\Exception $e){
-          echo "<script>console.log('Exception occured : ".$e->getResponseBody()."');</script>";
-	  echo "<script>console.log('Exception occured with code: ".$e->getResponseCode()."');</script>";
 //	  throw $e;
 		
 		try{
@@ -624,7 +607,6 @@ class Payment extends BaseRequest
                     
 			$errorjson = json_decode($errorbody);
       			if (!is_object($errorjson)){
-	  		   echo "<script>console.log('error body is not an object');</script>";
                            $ee = new Error();
                            $ee->setCode($e->getResponseCode());
                            $ee->setMessage($e->getResponseBody());
@@ -653,13 +635,11 @@ class Payment extends BaseRequest
                 		return $payment;
 			}
          	}catch (\Exception $ex){
-           		echo "<script>console.log('Exception occured : ".$ex->getMessage()."');</script>";   
            		//throw $ex;
 			
        
        		 }  
         }catch (ApiException $ae){
-          echo "<script>console.log('Exception occured : ".$ae->getResponseBody()."');</script>";
 //        throw $e;
 
                 try{
@@ -669,7 +649,6 @@ class Payment extends BaseRequest
                         
                         $errorjson = json_decode($errorbody);
                         if (!is_object($errorjson)){
-                           echo "<script>console.log('error body is not a json');</script>";
                            $ee = new Error();
                            $ee->setCode($ae->getResponseCode());
                            $ee->setMessage($ae->getResponseBody());
@@ -698,7 +677,6 @@ class Payment extends BaseRequest
                         return $payment;
 			}
                 }catch (ApiException $aex){
-                        echo "<script>console.log('Exception occured: ".$aex->getMessage()."');</script>";
                         throw $aex;
 
                  }
@@ -707,7 +685,6 @@ class Payment extends BaseRequest
     }
     
     public function wrapResponseHeaders($responseHeaders = []){
-        echo "<script>console.log('in wrapResponseHeaders');</script>";
         $rh = new ResponseHeader();
         $rh->setClientKey($responseHeaders['client_key']);
         $rh->setRequestUuid($responseHeaders['request_uuid']);

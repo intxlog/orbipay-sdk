@@ -15,12 +15,10 @@ class InvocationContext extends BaseRequest
 {
 	public function __construct($apiKey, $clientPrivateKey, $serverPublicKey, $idempotentRequestKey){
 
-	    	echo "<script>console.log('Inside invc');</script>";
         	$pk1 = base64_decode($clientPrivateKey);
         	$pk2 = preg_replace("/[\r\n]*/","",$pk1);
 	    	$pk2 = str_replace("-----BEGIN PRIVATE KEY-----","-----BEGIN PRIVATE KEY-----\n",$pk2);
         	$pk2 = str_replace("-----END PRIVATE KEY-----","\n-----END PRIVATE KEY-----",$pk2);
-	    	//echo "<script>console.log('privkey : ".$pk2."');</script>";
         	$privKey = $pk2;
         	$pb1 = base64_decode($serverPublicKey);
         	$pb2 = preg_replace("/[\r\n]*/","",$pb1);
@@ -31,7 +29,6 @@ class InvocationContext extends BaseRequest
         	$this->setCoPubKey($pubKey);
         	$this->setClientApiKey($apiKey);
         	$this->setIdempotentRequestKey($idempotentRequestKey);
-	    	echo "<script>console.log('Exiting invc');</script>";
 
 
 		}

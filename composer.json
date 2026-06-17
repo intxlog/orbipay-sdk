@@ -1,6 +1,6 @@
 {
     "name": "intxlog/orbipay-sdk",
-    "version": "5.4.0",
+    "version": "5.4.1",
     "description": "PHP SDK to integrate with Checkout.",
     "keywords": [
         "checkout",

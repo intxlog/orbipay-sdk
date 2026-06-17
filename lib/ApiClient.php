@@ -80,7 +80,7 @@ class ApiClient
      *
      * @param Configuration $config config for this ApiClient
      */
-    public function __construct($partnerId=null, $signatureKey=null, $clientApiKey=null, $liveMode=null, $idempotentRequestKey=null, \Com\Alacriti\Checkout\Client\Configuration $config = null )
+    public function __construct($partnerId=null, $signatureKey=null, $clientApiKey=null, $liveMode=null, $idempotentRequestKey=null, ?\Com\Alacriti\Checkout\Client\Configuration $config = null )
     {
         if ($config === null) {
             $config = Configuration::getDefaultConfiguration();

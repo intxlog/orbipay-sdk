@@ -142,7 +142,7 @@ class ConfirmPaymentTokenRequest implements ArrayAccess
      * Constructor
      * @param mixed[] $data Associated array of property values initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->container['customer_account_reference'] = isset($data['customer_account_reference']) ? $data['customer_account_reference'] : null;
         $this->container['custom_fields'] = isset($data['custom_fields']) ? $data['custom_fields'] : null;

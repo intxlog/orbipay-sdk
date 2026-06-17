@@ -155,7 +155,7 @@ class ConfirmAddFundAcctResponse implements ArrayAccess
      * Constructor
      * @param mixed[] $data Associated array of property values initializing the model
      */
-    public function __construct(array $data = null)
+    public function __construct(?array $data = null)
     {
         $this->container['custom_fields'] = isset($data['custom_fields']) ? $data['custom_fields'] : null;
         $this->container['funding_account'] = isset($data['funding_account']) ? $data['funding_account'] : null;

@@ -181,51 +181,38 @@ class ApiClient
         }
 
         
-	        echo "<script>console.log('live Mode Value received ".$this->liveMode."');</script>";
-            echo "<script>console.log('idempotent request key Value received ".$this->idempotentRequestKey."');</script>";	
 		$liveMode = $this->liveMode;
         $idempotentRequestKey = $this->idempotentRequestKey;
 		if(!(is_null($liveMode))){
-			echo "<script>console.log('live mode Value is : ".$liveMode."');</script>";
 			 if(strcasecmp($liveMode, APIConstants::LIVE_MODE_TRUE) == 0){
-                        	echo "<script>console.log('live mode is true. Using Production service url');</script>";
                         	$url = APIConstants::PRODUCTION_API_SERVICE_URL . $resourcePath;
                 	} elseif(strcasecmp($liveMode, APIConstants::LIVE_MODE_FALSE) == 0) {
-                        	echo "<script>console.log('live mode is false. Using Sandbox service url');</script>";
                         	$url = APIConstants::SANDBOX_API_SERVICE_URL . $resourcePath;
                 	}
                     elseif(strcasecmp($liveMode, APIConstants::LIVE_MODE_QA) == 0) {
-                            echo "<script>console.log('live mode is qa. Using QA service url');</script>";
                             $url = APIConstants::QA_API_SERVICE_URL . $resourcePath;
                     }
                     elseif(strcasecmp($liveMode, APIConstants::LIVE_MODE_DEVITG) == 0) {
-                            echo "<script>console.log('live mode is devitg. Using DEVITG service url');</script>";
                             $url = APIConstants::DEVITG_API_SERVICE_URL . $resourcePath;
                     }
                     elseif(strcasecmp($liveMode, APIConstants::LIVE_MODE_LOCAL) == 0) {
-                            echo "<script>console.log('live mode is local. Using LOCAL service url');</script>";
                             $url = APIConstants::LOCAL_API_SERVICE_URL . $resourcePath;
                     } else {
                         	throw new ApiException('Value of live mode : ' . $liveMode . ' is not recognized.');            
                 	}
 		}		 
 		else {
-			echo "<script>console.log('live mode is not configured, reading service url from conf');</script>";
 			$url = PropertiesUtil::getProperty(PropertiesUtil::CHECKOUT_API_SERVICE_URL) . $resourcePath;	
 		     }
 	
 	        if(!(is_null($this->clientApiKey))){
-			echo "<script>console.log('client api  key received ".$this->clientApiKey." ');</script>";
 			$apiKey = $this->clientApiKey;
 		} else {
-		        echo "<script>console.log('client api key is not received, setting client id ".$this->partnerId." to api key');</script>";
 			$apiKey = $this->partnerId;		
 		}	
-            echo "<script>console.log('generating the hash value ');</script>";
 
         $hmac_sha_256_hash = AuthenticationUtil::computeHMACSHA256HASH($url,$method,$queryParams,$postData,$headerParams,$this->signatureKey);
 
-        echo "<script>console.log('hash value generated  ');</script>";
 
         $autherizationHeader = APIConstants::OPAY1_AUTHORIZATION_SCHEME .
             " Credential=" . $apiKey . ",Signature=" . $hmac_sha_256_hash;
@@ -238,7 +225,6 @@ class ApiClient
 
         }
 
-        echo "<script>console.log('auth header generated ".$autherizationHeader." ');</script>";
 
 
         $curl = curl_init();
@@ -324,7 +310,6 @@ class ApiClient
         // obtain the HTTP response headers
         curl_setopt($curl, CURLOPT_HEADER, 1);
 
-        echo "<script>console.log('Calling the server side');</script>";
 
         // Make the request
         $response = curl_exec($curl);

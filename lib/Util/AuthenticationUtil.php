@@ -22,7 +22,6 @@ class AuthenticationUtil
     public static function computeHMACSHA256Hash($url, $method, $queryParams,
                                                  $postData, $headerParams, $signatureKey){
 
-       echo "<script>console.log('in computeHMACSHA256Hash ');</script>";
 
         $authenticationString = '';
 
@@ -100,7 +99,6 @@ class AuthenticationUtil
     }
 
     private static function generateHash($data, $key){
-        echo "<script>console.log('in generateHash ');</script>";
         try{
             return base64_encode(hash_hmac ( 'sha256' , $data , $key,true));
         }catch (\Exception $e){

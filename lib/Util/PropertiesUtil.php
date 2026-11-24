@@ -32,16 +32,14 @@ class PropertiesUtil
         return self::$properties[$property];
     }
     public static function  checkProperty($property){
-	echo "<script>console.log('inside checkProperty');</script>";
          if(self::$properties == null){
 
             throw new ApiException('Properties are missing.');
         }
 //	var_dump(array_key_exists($property, self::$properties));
 	if( array_key_exists($property, self::$properties) ){
-			echo "<script>console.log('found');</script>";
 		return true;
-	}else { echo "<script>console.log('not found');</script>"; return false; }
+	}else { return false; }
 
 	}
 }
@@ -52,7 +50,6 @@ $propertiesFile = null;
 try{
     $propertiesStream = Checkout::getPropertiesStream();
     if($propertiesStream != null){
-	echo "<script>console.log('Stream is not null');</script>";
             $json = json_decode($propertiesStream,true);
             PropertiesUtil::$properties = $json;
     }
@@ -61,12 +58,10 @@ try{
         $propertiesFilePath = Checkout::getPropertiesFilePath();
 
         if($propertiesFilePath == false){
-        echo "<script>console.log('properties file path not set..getting from env variable.');</script>";
             $propertiesFilePath = getenv('orbipay_checkout_config');
         }
 
         if($propertiesFilePath == false){
-        echo "<script>console.log('properties file path and env variable orbipay_checkout_config is missing');</script>";
             throw new ApiException('properties file path and env variable orbipay_checkout_config is missing');
         }
 

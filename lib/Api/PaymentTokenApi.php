@@ -187,7 +187,6 @@ class PaymentTokenApi
                 '\Com\Alacriti\Checkout\Client\Model\PaymentVO',
                 '/payments/token'
             );
- echo "<script>console.log('calling confirm token API');</script>";
             return [$this->apiClient->getSerializer()->deserialize($response, '\Com\Alacriti\Checkout\Client\Model\PaymentVO', $httpHeader), $statusCode, $httpHeader];
         } catch (ApiException $e) {
             switch ($e->getCode()) {

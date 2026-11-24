@@ -30,25 +30,13 @@ spl_autoload_register(/**
     function ($class) {
     // project-specific namespace prefix
     $prefix = 'Com\\Alacriti\\Checkout\\Client\\';
-    $seclibprefix = 'phpseclib\\';
-
 
     // base directory for the namespace prefix
     $base_dir = __DIR__ . '/lib/';
 
     // does the class use the namespace prefix?
     $len = strlen($prefix);
-
-    $newlen = strlen($seclibprefix);
-    $newrelative_class = substr($class, $newlen);
-    $newfile = $base_dir . 'phpseclib/' . str_replace('\\', '/', $newrelative_class) . '.php';
-    $newfilet = str_replace('//','/',$newfile);
-    if (file_exists($newfilet)) {
-        require $newfilet;
-        return;
-    }
-
-    if (strncmp($prefix, $class, $len) !== 0 && strncmp($seclibprefix, $class, $newlen) !== 0) {
+    if (strncmp($prefix, $class, $len) !== 0) {
         // no, move to the next registered autoloader
         return;
     }
@@ -64,7 +52,6 @@ spl_autoload_register(/**
     // if the file exists, require it
     if (file_exists($file)) {
         require $file;
-    }else{
     }
 });
 ?>

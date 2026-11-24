@@ -55,7 +55,7 @@ class FundingAccountApi
      *
      * @param \Com\Alacriti\Checkout\Client\ApiClient|null $apiClient The api client to use
      */
-    public function __construct(\Com\Alacriti\Checkout\Client\ApiClient $apiClient = null)
+    public function __construct(?\Com\Alacriti\Checkout\Client\ApiClient $apiClient = null)
     {
         if ($apiClient === null) {
             $apiClient = new ApiClient();

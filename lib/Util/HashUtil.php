@@ -20,16 +20,13 @@ class HashUtil
     const CHECKOUT_HEADERS = ['client_id','digi_sign'];
 
     public static function checkConnection(){
-        echo "<script>console.log('in chkconnction method');</script>";
     }
 
     public static function encrypt($message,$publicKey){
-       echo "<script>console.log('in encrypt method');</script>";
      $crypted = null;
          $pubKeyFinal = openssl_get_publickey($publicKey);
          //echo "<script>console.log('after pub final ".$pubKeyFinal."');</script>";
         if(openssl_public_encrypt($message, $crypted, $pubKeyFinal)){
-        echo "<script>console.log('after encrypt');</script>";
         //$encrypted = base64_encode($crypted);
         //echo "<script>console.log('encrypted message ".$encrypted."');</script>";
         
@@ -40,12 +37,10 @@ class HashUtil
     }
 
     public static function decrypt($crypted,$privateKey){
-        echo "<script>console.log('in decrypt method');</script>";
         $decrypted = null;
         $privateKeyfinal = openssl_get_privatekey($privateKey);
     //echo "<script>console.log('after priv final ".$privateKeyfinal."');</script>";
         if(openssl_private_decrypt(base64_decode($crypted), $decrypted, $privateKeyfinal)){
-        echo "<script>console.log('after decrypt');</script>";   
      return $decrypted;
         }else{
             throw new ApiException('Failed to decrypt.');

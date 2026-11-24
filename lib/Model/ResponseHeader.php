@@ -234,7 +234,6 @@ class ResponseHeader implements ArrayAccess
     public function setRequestUuid($requestUuid)
     {
         $this->container['requestUuid'] = $requestUuid;
-	echo "<script>console.log('requestUuid is: ".$requestUuid."');</script>";
         return $this;
     }
 
@@ -255,7 +254,6 @@ class ResponseHeader implements ArrayAccess
     public function setRequestTimestamp($requestTimestamp)
     {
         $this->container['requestTimestamp'] = $requestTimestamp;
-    echo "<script>console.log('requestTimestamp is: ".$requestTimestamp."');</script>";
         return $this;
     }
         /**
@@ -275,7 +273,6 @@ class ResponseHeader implements ArrayAccess
     public function setResponseCode($responseCode)
     {
         $this->container['responseCode'] = $responseCode;
-    echo "<script>console.log('responseCode is: ".$responseCode."');</script>";
         return $this;
     }
 
@@ -297,7 +294,6 @@ class ResponseHeader implements ArrayAccess
     public function setIdempotentRequestKey($idempotentRequestKey)
     {
         $this->container['idempotentRequestKey'] = $idempotentRequestKey;
-        echo "<script>console.log('idempotentRequestKey is: ".$idempotentRequestKey."');</script>";
 
         return $this;
     }
@@ -306,7 +302,7 @@ class ResponseHeader implements ArrayAccess
      * @param  integer $offset Offset
      * @return boolean
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->container[$offset]);
     }
@@ -316,7 +312,7 @@ class ResponseHeader implements ArrayAccess
      * @param  integer $offset Offset
      * @return mixed
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return isset($this->container[$offset]) ? $this->container[$offset] : null;
     }
@@ -327,7 +323,7 @@ class ResponseHeader implements ArrayAccess
      * @param  mixed   $value  Value to be set
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             $this->container[] = $value;
@@ -341,7 +337,7 @@ class ResponseHeader implements ArrayAccess
      * @param  integer $offset Offset
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->container[$offset]);
     }

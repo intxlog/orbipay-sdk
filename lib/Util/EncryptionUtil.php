@@ -23,7 +23,6 @@ class EncryptionUtil
     static $privateKey = null;
 
     public static function encrypt($message,$publicKey){
-    echo "<script>console.log('in encrypt method');</script>";
 	//  $crypted = null;
     //      $pubKeyFinal = openssl_get_publickey($publicKey);
     //      //echo "<script>console.log('after pub final ".$pubKeyFinal."');</script>";
